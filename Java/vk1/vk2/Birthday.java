@@ -7,7 +7,7 @@ public class Birthday {
 
         if (envBirthdate == null) {
             System.out.println("BIRTHDATE-ympäristömuuttujaa ei löytynyt.");
-            System.out.println("Aseta enviroment variable.");
+            System.out.println("Insert enviroment variable in run configurations.");
             return;
         }
         try{
