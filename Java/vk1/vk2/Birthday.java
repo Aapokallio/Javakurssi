@@ -7,7 +7,7 @@ public class Birthday {
 
         if (envBirthdate == null) {
             System.out.println("BIRTHDATE-ympäristömuuttujaa ei löytynyt.");
-            System.out.println("Aseta se CMD:ssä: set BIRTHDATE=YYYY-MM-DD");
+            System.out.println("Aseta enviroment variable.");
             return;
         }
         try{
