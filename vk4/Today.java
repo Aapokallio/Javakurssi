@@ -1,10 +1,9 @@
 import java.time.format.DateTimeParseException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import java.util.Collections;
 
 public class Today {
     private List<Event> events;
@@ -19,7 +18,7 @@ public class Today {
         Today app = new Today();
         app.addEvents();
 
-        if (args.length != 2) { // Parametrimäärän check
+        if (args.length != 2) { // Parametrimäärän check ja käyttäjän ohjeistus
             System.out.println("Arguments provided incorrectly. Please provide date and category in following way.");
             System.out.println("java Today --mm-dd xxxx/xxx");
             return;
@@ -30,7 +29,7 @@ public class Today {
         ArrayList<Event> matchedEvents = new ArrayList<>();
         LocalDate givenDate;
 
-        try { 
+        try { //Koitetaan luoda LocalDate olio ekasta argumentistä, lisäten mock vuosilku
             String parseArgDate = givenArgDate.replaceFirst("-", "2025");
             givenDate = LocalDate.parse(parseArgDate);
         } catch (DateTimeParseException e) {
@@ -39,34 +38,34 @@ public class Today {
         }
 
         Category givenCategory = Category.parse(givenArgCategory);
-        if (givenCategory.getPrimary() == null || givenCategory.getSecondary() == null) {
+        if (givenCategory.getPrimary() == null || givenCategory.getSecondary() == null) { //Katsotaan tokan argumentin kunto
             System.out.println("Invalid category given. Give category in xxx/xxx format.");
+            return;
         }
 
-        for (Event event : app.events) {
+        for (Event event : app.events) { // haetaan mätsit ja lisäillään listaan
             if (event.getCategory().equals(givenCategory)) {
                 if (event.getDate().getMonth() == givenDate.getMonth() &&
-                        event.getDate().getDayOfMonth() == givenDate.getDayOfMonth()){
+                        event.getDate().getDayOfMonth() == givenDate.getDayOfMonth()) {
                     matchedEvents.add(event);
                 }
             }
         }
-        if (matchedEvents.isEmpty()) {
+        if (matchedEvents.isEmpty()) { //Lopetus sorttaus ja printit
             System.out.println("No matches found for given category & date.");
         } else {
             matchedEvents.sort(Comparator.comparing(event -> event.getDate().getYear())); //vuosiluku sorttaus
-            System.out.println("Matches found for given category & date.");
+            Collections.reverse(matchedEvents);  //Uusin ensin
+            System.out.println("Matches found for given category & date");
             for (Event event : matchedEvents) {
                 System.out.println(event.getDate().getYear() + ": " +
                         event.getDescription());
             }
         }
-
     }
 
     private void report() {
         LocalDate today = LocalDate.now();
-
         for (Event event : this.events) {
             if (isSameDate(today, event.getDate())) {
                 System.out.println(event);
@@ -97,7 +96,7 @@ public class Today {
         // List.of makes an immutable collection
         // (can't add elements).
         List<Event> javaEvents = List.of(
-                makeEvent("2023-09-19", "Java SE 21 released", "oracle/java"),
+                makeEvent("2023-03-19", "Java SE 21 released", "oracle/java"),
                 makeEvent("2023-03-21", "Java SE 20 released", "oracle/java"),
                 makeEvent("2022-09-20", "Java SE 19 released", "oracle/java"),
                 makeEvent("2022-03-22", "Java SE 18 released", "oracle/java"),
