@@ -12,7 +12,7 @@ public class Today {
     public static void main(String[] args) {
 
         if (args.length != 1) {
-            System.out.println("No matching file found in user/today");
+            System.out.println("No proper argument given. Give just one file name as argument.");
             return;
         }
         String homeDir = System.getProperty("user.home");
