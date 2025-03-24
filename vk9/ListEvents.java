@@ -70,11 +70,10 @@ public class ListEvents implements Runnable {
 
         EventManager manager = EventManager.getInstance();
         MonthDay finalMonthDay = monthDay;
-        manager.getEventProviderIdentifiers().forEach(id -> {
-            if (id.equals("web")) {
-                ((WebEventProvider)manager.getEventProvider(id)).setMonthDay(finalMonthDay);
-            }
-        });
+        WebEventProvider webProvider = (WebEventProvider) manager.getEventProvider("web");
+        if (webProvider != null) {
+            webProvider.setMonthDay(finalMonthDay);
+        }
 
         List<Event> filteredEvents = manager.getFilteredEvents(filter);
 
